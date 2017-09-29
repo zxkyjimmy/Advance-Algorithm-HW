@@ -1,5 +1,5 @@
 *output.txt
-.vscode/tags
+.vscode/*
 # Prerequisites
 *.d
 
