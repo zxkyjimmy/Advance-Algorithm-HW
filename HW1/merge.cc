@@ -43,6 +43,9 @@ int main(int argc, char** argv) {
         }
     }
     stop = clock();
+    for (int i = 0; i < count ; i++) {
+        cout << content+labels[i] << endl;
+    }
     cout << count << endl;
     cout << double(stop-start)*1000/CLOCKS_PER_SEC << " ms."<< endl;
     free(content);
