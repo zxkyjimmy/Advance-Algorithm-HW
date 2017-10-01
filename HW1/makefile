@@ -14,4 +14,4 @@ all: $(EXEC)
 	g++ -o $@ $< $(ARCHS) $(FLAGS) $(LINKS)
 .PHONY: clean
 clean:
-	@rm -rf $(EXEC)
+	@rm -rf $(EXEC) output.txt
