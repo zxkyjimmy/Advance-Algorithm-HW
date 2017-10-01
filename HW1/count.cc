@@ -10,8 +10,15 @@ bool func(int i, int j) {
     return strcmp(content+i, content+j) < 0;
 }
 class Item {
+public:
     int index;
-    int num = 0;
+    int num;
+    bool operator< (const Item item) const {
+        if (num == item.num) {
+            return strcmp(content+index, content+item.index) < 0;
+        }
+        return num > item.num;
+    }
 };
 int main(int argc, char **argv) {
     time_t start, stop;
@@ -20,6 +27,7 @@ int main(int argc, char **argv) {
     int count = 0;
     bool previous_is_word = false;
     FILE *f;
+    Item *counter;
     if (argc != 2) {
         cout << "Usage : " << argv[0] << " filename" << endl;
         return 1;
@@ -51,8 +59,35 @@ int main(int argc, char **argv) {
             }
         }
     }
+    counter = (Item *)malloc(count*sizeof(Item));
     sort(labels, labels+count, func);
+    int tmpindex = length;
+    int counter_size = 0;
+    for (int i = 0; i < count; i++) {
+        if (strcmp(content+labels[i], content+tmpindex) == 0) {
+            counter[counter_size-1].num++;
+        } else {
+            counter[counter_size].index = labels[i];
+            counter[counter_size].num = 1;
+            tmpindex = labels[i];
+            counter_size++;
+        }
+    }
+    sort(counter, counter+counter_size);
     stop = clock();
+    fclose(f);
+    f = fopen("output.txt", "w");
+    int times = 0;
+    for (int i = 0; i < counter_size; i++) {
+        if (counter[i].num != times) {
+            if (times != 0) {
+                fprintf(f, "\n");
+            }
+            times = counter[i].num;
+            fprintf(f, "%d: ", times);
+        }
+        fprintf(f, "%s ", content+counter[i].index);
+    }
     cout << "words: " << count << endl;
     cout << "time : " << double(stop-start)*1000/CLOCKS_PER_SEC << " ms."<< endl;
     free(content);

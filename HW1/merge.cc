@@ -79,9 +79,9 @@ int main(int argc, char** argv) {
     }
     merge_sort(labels, count);
     stop = clock();
-    cout << count << endl;
-    cout << entropy << endl;
-    cout << double(stop-start)*1000/CLOCKS_PER_SEC << " ms."<< endl;
+    cout << "words: " << count << endl;
+    cout << "entropy: " << entropy << endl;
+    cout << "time : " << double(stop-start)*1000/CLOCKS_PER_SEC << " ms."<< endl;
     free(content);
     free(labels);
     fclose(f);
