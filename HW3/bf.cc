@@ -30,43 +30,23 @@ class Game {
     vector<Pos> move() const {
         vector<Pos> result;
         Pos pos;
-        pos.x = knight.x + 4;
-        pos.y = knight.y + 3;
+        pos.x = knight.x + 1;
+        pos.y = knight.y;
         if (can_move(pos)) {
             result.push_back(pos);
         }
-        pos.x = knight.x + 3;
-        pos.y = knight.y + 4;
+        pos.x = knight.x;
+        pos.y = knight.y + 1;
         if (can_move(pos)) {
             result.push_back(pos);
         }
-        pos.x = knight.x + 4;
-        pos.y = knight.y - 3;
+        pos.x = knight.x - 1;
+        pos.y = knight.y;
         if (can_move(pos)) {
             result.push_back(pos);
         }
-        pos.x = knight.x + 3;
-        pos.y = knight.y - 4;
-        if (can_move(pos)) {
-            result.push_back(pos);
-        }
-        pos.x = knight.x - 4;
-        pos.y = knight.y + 3;
-        if (can_move(pos)) {
-            result.push_back(pos);
-        }
-        pos.x = knight.x - 3;
-        pos.y = knight.y + 4;
-        if (can_move(pos)) {
-            result.push_back(pos);
-        }
-        pos.x = knight.x - 4;
-        pos.y = knight.y - 3;
-        if (can_move(pos)) {
-            result.push_back(pos);
-        }
-        pos.x = knight.x - 3;
-        pos.y = knight.y - 4;
+        pos.x = knight.x;
+        pos.y = knight.y - 1;
         if (can_move(pos)) {
             result.push_back(pos);
         }
@@ -101,13 +81,26 @@ public:
         int depth = m*n;
         return DFS(depth);
     }
+
+    friend ostream& operator << (ostream& os, const Game &g);
 };
+
+ostream& operator << (ostream& os, const Game &g) {
+    for (int i = 0; i < g.m; i++) {
+        for (int j = 0; j < g.n; j++) {
+            os << g.board[i][j] << '\t';
+        }
+        os << endl;
+    }
+    return os;
+}
 
 int main() {
     int m, n;
     while (cin >> m >> n) {
         Game g(m, n);
         cout << g.tour() << endl;
+        cout << g << endl;
     }
     return 0;
 }
