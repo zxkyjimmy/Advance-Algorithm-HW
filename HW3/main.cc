@@ -7,8 +7,40 @@ class Game {
     int board[size][size] = {0};
     int m, n;
 
-    bool Paint(int id) {
-        return false;
+    int Paint2n(int id, int base) {
+        if (base == m) return id;
+        board[base][0] = id++;
+        board[base+1][0] = id++;
+        id = Paint2n(id, base+2);
+        for (int i = 1; i < n; i++) {
+            board[base+1][i] = id++;
+        }
+        for (int i = n-1; i >= 1; i--) {
+            board[base][i] = id++;
+        }
+        return id;
+    }
+
+    int Paintm2(int id, int base) {
+        if (base == n) return id;
+        board[0][base] = id++;
+        board[0][base+1] = id++;
+        id = Paintm2(id, base+2);
+        for (int i = 1; i < m; i++) {
+            board[i][base+1] = id++;
+        }
+        for (int i = m-1; i >= 1; i--) {
+            board[i][base] = id++;
+        }
+        return id;
+    }
+
+    void Paint() {
+        if ((m & 1) == 0) {
+            Paint2n(1, 0);
+        } else if ((n & 1) == 0) {
+            Paintm2(1, 0);
+        }
     }
 
 public:
@@ -16,11 +48,13 @@ public:
 
     bool tour() {
         if (m > size || n > size) return false;
+        if (m < 2 || n < 2) return false;
 
         // Both m and n are odd.
         if (m & n & 1) return false;
 
-        return Paint(0);
+        Paint();
+        return true;
     }
 
     friend ostream& operator << (ostream& os, const Game &g);
@@ -37,5 +71,22 @@ ostream& operator << (ostream& os, const Game &g) {
 }
 
 int main() {
+    int m, n;
+    while (true) {
+        cout << "Hint: if m = 0 or n = 0, then program quit." << endl;
+        cout << "input m --->";
+        cin >> m;
+        if (m == 0) break;
+        cout << "input n --->";
+        cin >> n;
+        if (n == 0) break;
+        cout << endl;
+        Game g(m, n);
+        if (g.tour()) {
+            cout << g << endl;
+        } else {
+            cout << "No close path." << endl;
+        }
+    }
     return 0;
 }
